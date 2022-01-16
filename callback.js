@@ -1,8 +1,8 @@
 const http = require('http')
 
-const CALLBACK_URL = process.env.CALLBACK_URL ? new URL(process.env.CALLBACK_URL) : null
-const CALLBACK_TIMEOUT = process.env.CALLBACK_TIMEOUT || 5000
-const CALLBACK_OBJECTS = process.env.CALLBACK_OBJECTS ? JSON.parse(process.env.CALLBACK_OBJECTS) : {}
+const CALLBACK_URL = new URL("http://127.0.0.1:5000/update")
+const CALLBACK_TIMEOUT = 5000
+const CALLBACK_OBJECTS = { "bytecrowdText": "Text" }
 
 exports.isCallbackSet = !!CALLBACK_URL
 
