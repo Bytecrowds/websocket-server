@@ -1,5 +1,5 @@
 {
-  "name": "yjs-demos-server",
+  "name": "yjs-server",
   "version": "0.0.0",
   "private": true,
   "description": "Demo server that serves the static assets and provides a shared websocket backend.",
@@ -8,7 +8,7 @@
     "url": "https://github.com/sponsors/dmonad"
   },
   "scripts": {
-    "start": "export PRODUCTION=1; node ./demo-server.js"
+    "start": "export PRODUCTION=1; node ./server.js"
   },
   "author": "Kevin Jahns <kevin.jahns@protonmail.com",
   "license": "MIT",
