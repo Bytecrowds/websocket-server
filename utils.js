@@ -1,3 +1,5 @@
+const { CALLBACK_DEBOUNCE_WAIT, CALLBACK_DEBOUNCE_MAXWAIT } = require('./config');
+
 const Y = require('yjs')
 const syncProtocol = require('y-protocols/dist/sync.cjs')
 const awarenessProtocol = require('y-protocols/dist/awareness.cjs')
@@ -11,9 +13,6 @@ const debounce = require('lodash.debounce')
 
 const callbackHandler = require('./callback.js').callbackHandler
 const isCallbackSet = require('./callback.js').isCallbackSet
-
-const CALLBACK_DEBOUNCE_WAIT = parseInt(process.env.CALLBACK_DEBOUNCE_WAIT) || 2000
-const CALLBACK_DEBOUNCE_MAXWAIT = parseInt(process.env.CALLBACK_DEBOUNCE_MAXWAIT) || 10000
 
 const wsReadyStateConnecting = 0
 const wsReadyStateOpen = 1

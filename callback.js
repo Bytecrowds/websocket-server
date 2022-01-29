@@ -1,8 +1,7 @@
+const { CALLBACK_URL, CALLBACK_TIMEOUT, CALLBACK_OBJECTS } = require('./config')
+
 const http = require('http')
 
-const CALLBACK_URL = new URL("https://bytecrowds-database-server.herokuapp.com/update")
-const CALLBACK_TIMEOUT = 5000
-const CALLBACK_OBJECTS = { "bytecrowdText": "Text" }
 
 exports.isCallbackSet = !!CALLBACK_URL
 
