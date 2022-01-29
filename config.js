@@ -1,4 +1,4 @@
-require('dotenv').config();
+//require('dotenv').config();
 
 exports.CALLBACK_URL = process.env.CALLBACK_URL || new URL("http://localhost:5000/update")
 exports.CALLBACK_TIMEOUT = process.env.CALLBACK_TIMEOUT || 5000
