@@ -1,4 +1,4 @@
-const { CALLBACK_DEBOUNCE_WAIT, CALLBACK_DEBOUNCE_MAXWAIT } = require('./config');
+const { CALLBACK_DEBOUNCE_WAIT, CALLBACK_DEBOUNCE_MAXWAIT, GC, YPERSISTENCE } = require('./config');
 
 const Y = require('yjs')
 const syncProtocol = require('y-protocols/dist/sync.cjs')
@@ -19,18 +19,16 @@ const wsReadyStateOpen = 1
 const wsReadyStateClosing = 2 // eslint-disable-line
 const wsReadyStateClosed = 3 // eslint-disable-line
 
-// disable gc when using snapshots!
-const gcEnabled = process.env.GC !== 'false' && process.env.GC !== '0'
-const persistenceDir = process.env.YPERSISTENCE
+
 /**
  * @type {{bindState: function(string,WSSharedDoc):void, writeState:function(string,WSSharedDoc):Promise<any>, provider: any}|null}
  */
 let persistence = null
-if (typeof persistenceDir === 'string') {
-    console.info('Persisting documents to "' + persistenceDir + '"')
+if (typeof YPERSISTENCE === 'string') {
+    console.info('Persisting documents to "' + YPERSISTENCE + '"')
     // @ts-ignore
     const LeveldbPersistence = require('y-leveldb').LeveldbPersistence
-    const ldb = new LeveldbPersistence(persistenceDir)
+    const ldb = new LeveldbPersistence(YPERSISTENCE)
     persistence = {
         provider: ldb,
         bindState: async (docName, ydoc) => {
@@ -89,7 +87,7 @@ class WSSharedDoc extends Y.Doc {
      * @param {string} name
      */
     constructor(name) {
-        super({ gc: gcEnabled })
+        super({ gc: GC })
         this.name = name
         this.mux = mutex.createMutex()
         /**
