@@ -1,7 +1,7 @@
 /**
  * @type {any}
  */
-const { HOST, PORT } = require('./config')
+require('dotenv').config()
 
 const WebSocket = require('ws')
 const http = require('http')
@@ -27,6 +27,7 @@ server.on('upgrade', (request, socket, head) => {
     wss.handleUpgrade(request, socket, head, handleAuth)
 })
 
-server.listen(PORT, () => {
-    console.log(`running at '${HOST}' on port ${PORT}`)
+const port = process.env.PORT
+server.listen(port, () => {
+    console.log(`running at '${process.env.HOST}' on port ${port}`)
 })

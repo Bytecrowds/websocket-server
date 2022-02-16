@@ -1,5 +1,3 @@
-const { CALLBACK_DEBOUNCE_WAIT, CALLBACK_DEBOUNCE_MAXWAIT, GC, YPERSISTENCE } = require('./config');
-
 const Y = require('yjs')
 const syncProtocol = require('y-protocols/dist/sync.cjs')
 const awarenessProtocol = require('y-protocols/dist/awareness.cjs')
@@ -24,11 +22,12 @@ const wsReadyStateClosed = 3 // eslint-disable-line
  * @type {{bindState: function(string,WSSharedDoc):void, writeState:function(string,WSSharedDoc):Promise<any>, provider: any}|null}
  */
 let persistence = null
-if (typeof YPERSISTENCE === 'string') {
-    console.info('Persisting documents to "' + YPERSISTENCE + '"')
+const ypersistence = process.env.YPERSISTENCE
+if (typeof ypersistence === 'string') {
+    console.info('Persisting documents to "' + ypersistence + '"')
     // @ts-ignore
     const LeveldbPersistence = require('y-leveldb').LeveldbPersistence
-    const ldb = new LeveldbPersistence(YPERSISTENCE)
+    const ldb = new LeveldbPersistence(ypersistence)
     persistence = {
         provider: ldb,
         bindState: async (docName, ydoc) => {
@@ -87,7 +86,7 @@ class WSSharedDoc extends Y.Doc {
      * @param {string} name
      */
     constructor(name) {
-        super({ gc: GC })
+        super({ gc: process.env.GC !== 'false' })
         this.name = name
         this.mux = mutex.createMutex()
         /**
@@ -127,8 +126,8 @@ class WSSharedDoc extends Y.Doc {
         if (isCallbackSet) {
             this.on('update', debounce(
                 callbackHandler,
-                CALLBACK_DEBOUNCE_WAIT,
-                { maxWait: CALLBACK_DEBOUNCE_MAXWAIT }
+                parseInt(process.env.CALLBACK_DEBOUNCE_WAIT),
+                { maxWait: parseInt(process.env.CALLBACK_DEBOUNCE_MAXWAIT) }
             ))
         }
     }

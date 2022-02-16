@@ -1,9 +1,9 @@
-const { CALLBACK_URL, CALLBACK_TIMEOUT, CALLBACK_OBJECTS } = require('./config')
-
 const http = require('http')
 
+const callbackURL = new URL(process.env.CALLBACK_URL)
+exports.isCallbackSet = !!callbackURL
 
-exports.isCallbackSet = !!CALLBACK_URL
+const callbackObjects = JSON.parse(process.env.CALLBACK_OBJECTS)
 
 /**
  * @param {Uint8Array} update
@@ -16,15 +16,15 @@ exports.callbackHandler = (update, origin, doc) => {
         room: room,
         data: {}
     }
-    const sharedObjectList = Object.keys(CALLBACK_OBJECTS)
+    const sharedObjectList = Object.keys(callbackObjects)
     sharedObjectList.forEach(sharedObjectName => {
-        const sharedObjectType = CALLBACK_OBJECTS[sharedObjectName]
+        const sharedObjectType = callbackObjects[sharedObjectName]
         dataToSend.data[sharedObjectName] = {
             type: sharedObjectType,
             content: getContent(sharedObjectName, sharedObjectType, doc).toJSON()
         }
     })
-    callbackRequest(CALLBACK_URL, CALLBACK_TIMEOUT, dataToSend)
+    callbackRequest(callbackURL, parseInt(process.env.CALLBACK_TIMEOUT), dataToSend)
 }
 
 /**
