@@ -1,7 +1,7 @@
 /**
  * @type {any}
  */
-require('dotenv').config()
+//require('dotenv').config()
 
 const WebSocket = require('ws')
 const http = require('http')
